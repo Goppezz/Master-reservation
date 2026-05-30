@@ -5,34 +5,59 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Master Restaurant | Prenotazione WhatsApp</title>
 <style>
-:root{--bg:#06101f;--panel:#0c1530;--card:#101b38;--line:rgba(255,255,255,.10);--text:#f8fafc;--muted:#aab6d3;--green:#25D366;--pink:#E1306C}
-*{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:radial-gradient(circle at top,#18233f 0,#09101f 45%,#020617 100%);color:var(--text)}
-.wrap{min-height:100vh;display:flex;justify-content:center;padding:18px} .shell{width:min(980px,100%);display:grid;gap:16px}
-.section{border:1px solid var(--line);border-radius:28px;background:linear-gradient(180deg,rgba(12,21,48,.96),rgba(4,8,20,.98));box-shadow:0 24px 70px rgba(0,0,0,.35)}
-.header{padding:18px} .logo{display:flex;justify-content:center;align-items:center} .logo img{width:min(360px,88%);height:auto;display:block;object-fit:contain}
-.header-copy{text-align:center;margin-top:12px}
-.brand{font-size:13px;line-height:1.2;font-weight:600;letter-spacing:.04em;text-transform:none} .sub{margin:10px auto 0;color:var(--muted);font-size:14px;line-height:1.55;max-width:64ch;font-weight:400}
-.hours{margin-top:14px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:.08em;font-size:12px} .hours-line{margin-top:8px;font-size:16px;line-height:1.5;color:var(--text)}
-.address{margin-top:12px;font-size:15px;line-height:1.45;color:var(--text);max-width:70ch;margin-left:auto;margin-right:auto;text-align:center}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#eef2f8;color:#294092}
+.wrap{min-height:100vh;display:flex;justify-content:center;padding:18px}
+.shell{width:min(980px,100%);display:grid;gap:16px}
+.section{border:1px solid rgba(41,64,146,.18);border-radius:28px;background:#294092;box-shadow:0 24px 70px rgba(41,64,146,.22);color:#fff}
+.header{padding:20px 18px 18px}
+.logo{display:flex;justify-content:center;align-items:center;padding:8px 0 4px}
+.logo img{width:min(340px,85%);height:auto;display:block;object-fit:contain}
+.header-copy{text-align:center}
+.brand{font-size:13px;line-height:1.3;font-weight:600;letter-spacing:.04em;color:#fff}
+.sub{margin:10px auto 0;color:rgba(255,255,255,.82);font-size:14px;line-height:1.6;max-width:64ch;font-weight:400}
+.hours{margin-top:14px;font-weight:700;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.08em;font-size:11px}
+.hours-line{margin-top:6px;font-size:16px;line-height:1.55;color:#fff}
+.address{margin-top:12px;font-size:14px;line-height:1.5;color:rgba(255,255,255,.8);max-width:70ch;margin-left:auto;margin-right:auto;text-align:center}
 .body{padding:16px}
-.langrow{display:grid;grid-template-columns:1fr 1fr;gap:12px;justify-items:center;align-items:start;margin-bottom:14px}.langbtn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:10px 8px;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);cursor:pointer;font-weight:700;min-width:150px}.langbtn.active{background:rgba(245,201,106,.14);border-color:rgba(245,201,106,.34)}.flag{font-size:34px;line-height:1}.langtxt{font-size:14px;line-height:1}
-.grid{display:grid;grid-template-columns:1fr;gap:14px} .card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:16px} .card h2{margin:0 0 10px;font-size:18px} .card p{margin:0;color:var(--muted);line-height:1.55}
-.form{display:grid;gap:10px;margin-top:12px} label{display:grid;gap:6px;font-size:13px;color:#93a0bf;font-weight:600} input{width:100%;padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--text);outline:none} input:focus{border-color:rgba(245,201,106,.55);box-shadow:0 0 0 4px rgba(245,201,106,.1)}
-.actions{display:grid;gap:10px;margin-top:14px} .btn{display:flex;align-items:center;justify-content:center;text-decoration:none;padding:16px 18px;border-radius:18px;font-weight:800} .wa{background:var(--green);color:#042f1b} .ig{background:var(--pink);color:#fff} .ghost{background:transparent;color:var(--text);border:1px solid var(--line)} .note{margin-top:10px;font-size:13px;color:#93a0bf;line-height:1.45}
-.footer{padding:16px} .footgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px} .footbox{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:20px;padding:14px 16px;text-align:center} .footbox .k{font-size:12px;color:#93a0bf;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
-.footlink{color:#f9a8d4;text-decoration:none;font-weight:700}
-@media(max-width:760px){.footgrid{grid-template-columns:1fr} .brand{font-size:13px} .logo img{width:min(320px,92%)}}
+.langrow{display:grid;grid-template-columns:1fr 1fr;gap:12px;justify-items:center;align-items:start;margin-bottom:14px}
+.langbtn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:10px 8px;border-radius:18px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff;cursor:pointer;font-weight:700;min-width:150px;transition:background .2s,border-color .2s}
+.langbtn.active{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.55)}
+.flag{font-size:34px;line-height:1}
+.langtxt{font-size:14px;line-height:1}
+.grid{display:grid;grid-template-columns:1fr;gap:14px}
+.card{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.2);border-radius:22px;padding:16px}
+.card h2{margin:0 0 10px;font-size:18px;color:#fff}
+.card p{margin:0;color:rgba(255,255,255,.8);line-height:1.55}
+.form{display:grid;gap:10px;margin-top:12px}
+label{display:grid;gap:6px;font-size:13px;color:rgba(255,255,255,.78);font-weight:600}
+input{width:100%;padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.11);color:#fff;outline:none;font-size:15px}
+input::placeholder{color:rgba(255,255,255,.38)}
+input:focus{border-color:rgba(255,255,255,.6);box-shadow:0 0 0 4px rgba(255,255,255,.12)}
+.actions{display:grid;gap:10px;margin-top:14px}
+.btn{display:flex;align-items:center;justify-content:center;text-decoration:none;padding:16px 18px;border-radius:18px;font-weight:800;font-size:16px}
+.wa{background:#25D366;color:#042f1b}
+.note{margin-top:10px;font-size:13px;color:rgba(255,255,255,.68);line-height:1.45}
+.footer{padding:16px}
+.footgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.footbox{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:14px 16px;text-align:center}
+.footbox .k{font-size:11px;color:rgba(255,255,255,.68);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.footbox .v{color:#fff;font-size:14px;line-height:1.4}
+.footlink{color:#93c5fd;text-decoration:none;font-weight:700}
+@media(max-width:680px){.footgrid{grid-template-columns:1fr} .logo img{width:min(300px,92%)}}
 </style>
 </head>
 <body>
 <div class="wrap"><div class="shell">
+
+<div class="logo"><img src="assets/logo.png" alt="Master logo"></div>
+
 <section class="section header">
-  <div class="logo"><img src="sandbox:/mnt/data/LOGO-MASTER-sito.jpeg" alt="Master logo"></div>
   <div class="header-copy">
-    <div class="brand" id="brand"><span class="master-word">MASTER</span> <span class="light-word">Restaurant - American Bar</span><br><span class="light-word">Santa Margherita Ligure</span></div>
-    <div class="sub" id="sub">Fine dining, top wines and signature cocktails in a stylish relaxed venue.</div>
+    <div class="brand" id="brand">Restaurant &amp; American Bar<br>Santa Margherita Ligure</div>
+    <div class="sub" id="sub">Cucina fine dining, grandi vini e cocktail signature in un ambiente elegante e rilassato.</div>
     <div class="hours" id="hours-label">Aperto tutti i giorni</div>
-    <div class="hours-line" id="hours-line">17:00 - 01:00 Ristorante<br>17:00 - 02:00 American Bar</div>
+    <div class="hours-line" id="hours-line">17:00 – 01:00 &nbsp;Ristorante<br>17:00 – 02:00 &nbsp;American Bar</div>
     <div class="address">Piazza Martiri della Libertà 14r, Santa Margherita Ligure</div>
   </div>
 </section>
@@ -45,7 +70,7 @@
   <div class="grid">
     <div class="card">
       <h2 id="title">Compila la prenotazione</h2>
-      <p id="subtitle">Compila i campi qui sotto e premi “Prenota ora”.</p>
+      <p id="subtitle">Compila i campi qui sotto e premi "Prenota ora".</p>
       <div class="form">
         <label id="lbl-name">Nome<input id="name" placeholder="Giorgio"></label>
         <label id="lbl-date">Data<input id="date" placeholder="28/05/2026"></label>
@@ -53,7 +78,7 @@
         <label id="lbl-guests">Persone<input id="guests" placeholder="2"></label>
       </div>
       <div class="actions">
-        <a class="btn wa" id="wa-link" href="https://wa.me/393290013023?text=Buonasera%2C%20sono%3A%20%7BNOME%7D%0AVorrei%20prenotare%20un%20tavolo%20per%20cena%20in%20data%3A%20%7BDATA%7D%0AAlle%20ore%3A%20%7BORA%7D%0ANumero%20persone%3A%20%7BPERSONE%7D" target="_blank" rel="noopener">Prenota ora</a>
+        <a class="btn wa" id="wa-link" href="#" target="_blank" rel="noopener">Prenota ora</a>
         <div class="note" id="disclaimer">Si aprirà WhatsApp con il messaggio già pronto.</div>
       </div>
     </div>
@@ -62,22 +87,87 @@
 
 <section class="section footer">
   <div class="footgrid">
-    <div class="footbox"><div class="k">Follow us</div><div class="v"><a class="footlink" href="https://www.instagram.com/mastersml/" target="_blank" rel="noopener">@mastersml</a></div></div>
-    <div class="footbox"><div class="k">Telefono</div><div class="v"><a class="footlink" href="tel:+393290013023">+39 329 001 3023</a></div></div>
-    <div class="footbox"><div class="k">Indirizzo</div><div class="v">Piazza Martiri della Libertà 14r, Santa Margherita Ligure</div></div>
+    <div class="footbox">
+      <div class="k">Follow us</div>
+      <div class="v"><a class="footlink" href="https://www.instagram.com/mastersml/" target="_blank" rel="noopener">@mastersml</a></div>
+    </div>
+    <div class="footbox">
+      <div class="k" id="footer-phone-label">Telefono</div>
+      <div class="v"><a class="footlink" href="tel:+393290013023">+39 329 001 3023</a></div>
+    </div>
+    <div class="footbox">
+      <div class="k" id="footer-address-label">Indirizzo</div>
+      <div class="v">Piazza Martiri della Libertà 14r,<br>Santa Margherita Ligure</div>
+    </div>
   </div>
 </section>
+
 </div></div>
 <script>
 let lang='it';
 const data={
- it:{brand:'MASTER Restaurant - American Bar<br>Santa Margherita Ligure',sub:'Cucina fine dining, grandi vini e cocktail signature in un ambiente elegante e rilassato.',hoursLabel:'Aperto tutti i giorni',hoursLine:'17:00 - 01:00 Ristorante<br>17:00 - 02:00 American Bar',title:'Compila la prenotazione',subtitle:'Compila i campi qui sotto e premi “Prenota ora”.',disclaimer:'Si aprirà WhatsApp con il messaggio già pronto.',name:'Nome',date:'Data',time:'Ora',guests:'Persone',wa:'Prenota ora'},
- en:{brand:'MASTER Restaurant - American Bar<br>Santa Margherita Ligure',sub:'Cucina fine dining, grandi vini e cocktail signature in un ambiente elegante e rilassato.',hoursLabel:'Open every day',hoursLine:'05:00 PM - 01:00 AM Restaurant<br>05:00 PM - 02:00 AM American Bar',title:'Fill in the booking',subtitle:'Fill in the fields below and tap “Book now”.',disclaimer:'WhatsApp will open with the message already ready.',name:'Name',date:'Date',time:'Time',guests:'Guests',wa:'Book now'}
+  it:{
+    brand:'Restaurant &amp; American Bar<br>Santa Margherita Ligure',
+    sub:'Cucina fine dining, grandi vini e cocktail signature in un ambiente elegante e rilassato.',
+    hoursLabel:'Aperto tutti i giorni',
+    hoursLine:'17:00 – 01:00 &nbsp;Ristorante<br>17:00 – 02:00 &nbsp;American Bar',
+    title:'Compila la prenotazione',
+    subtitle:'Compila i campi qui sotto e premi "Prenota ora".',
+    disclaimer:'Si aprirà WhatsApp con il messaggio già pronto.',
+    name:'Nome',date:'Data',time:'Ora',guests:'Persone',wa:'Prenota ora',
+    footerPhone:'Telefono',footerAddress:'Indirizzo'
+  },
+  en:{
+    brand:'Restaurant &amp; American Bar<br>Santa Margherita Ligure',
+    sub:'Fine dining, great wines and signature cocktails in an elegant and relaxed atmosphere.',
+    hoursLabel:'Open every day',
+    hoursLine:'5:00 PM – 1:00 AM &nbsp;Restaurant<br>5:00 PM – 2:00 AM &nbsp;American Bar',
+    title:'Book a table',
+    subtitle:'Fill in the fields below and tap "Book now".',
+    disclaimer:'WhatsApp will open with the message already filled in.',
+    name:'Name',date:'Date',time:'Time',guests:'Guests',wa:'Book now',
+    footerPhone:'Phone',footerAddress:'Address'
+  }
 };
-function setLang(l){lang=l;document.getElementById('lang-it').classList.toggle('active',l==='it');document.getElementById('lang-en').classList.toggle('active',l==='en');document.getElementById('brand').innerHTML=data[l].brand;document.getElementById('sub').textContent=data[l].sub;document.getElementById('hours-label').textContent=data[l].hoursLabel;document.getElementById('hours-line').innerHTML=data[l].hoursLine;document.getElementById('title').textContent=data[l].title;document.getElementById('subtitle').textContent=data[l].subtitle;document.getElementById('disclaimer').textContent=data[l].disclaimer;document.getElementById('lbl-name').firstChild.textContent=data[l].name;document.getElementById('lbl-date').firstChild.textContent=data[l].date;document.getElementById('lbl-time').firstChild.textContent=data[l].time;document.getElementById('lbl-guests').firstChild.textContent=data[l].guests;document.getElementById('wa-link').textContent=data[l].wa;render();}
+
+function setLang(l){
+  lang=l;
+  document.getElementById('lang-it').classList.toggle('active',l==='it');
+  document.getElementById('lang-en').classList.toggle('active',l==='en');
+  document.documentElement.lang=l;
+  const d=data[l];
+  document.getElementById('brand').innerHTML=d.brand;
+  document.getElementById('sub').textContent=d.sub;
+  document.getElementById('hours-label').textContent=d.hoursLabel;
+  document.getElementById('hours-line').innerHTML=d.hoursLine;
+  document.getElementById('title').textContent=d.title;
+  document.getElementById('subtitle').textContent=d.subtitle;
+  document.getElementById('disclaimer').textContent=d.disclaimer;
+  document.getElementById('lbl-name').firstChild.textContent=d.name;
+  document.getElementById('lbl-date').firstChild.textContent=d.date;
+  document.getElementById('lbl-time').firstChild.textContent=d.time;
+  document.getElementById('lbl-guests').firstChild.textContent=d.guests;
+  document.getElementById('wa-link').textContent=d.wa;
+  document.getElementById('footer-phone-label').textContent=d.footerPhone;
+  document.getElementById('footer-address-label').textContent=d.footerAddress;
+  render();
+}
+
 function v(id){return document.getElementById(id).value.trim()}
-function render(){const n=v('name')||(lang==='it'?'__NOME__':'__NAME__');const d=v('date')||(lang==='it'?'__DATA__':'__DATE__');const t=v('time')||(lang==='it'?'__ORA__':'__TIME__');const g=v('guests')||(lang==='it'?'__PERSONE__':'__GUESTS__');const txt=lang==='it'?`Buonasera, sono: ${n}\nVorrei prenotare un tavolo per cena in data: ${d}\nAlle ore: ${t}\nNumero persone: ${g}`:`Good evening, my name is: ${n}\nI would like to book a table for dinner on: ${d}\nAt: ${t}\nNumber of guests: ${g}`;document.getElementById('wa-link').href='https://wa.me/393290013023?text='+encodeURIComponent(txt)}
-['name','date','time','guests'].forEach(id=>document.getElementById(id).addEventListener('input',render));render();
+
+function render(){
+  const n=v('name')||(lang==='it'?'__NOME__':'__NAME__');
+  const d=v('date')||(lang==='it'?'__DATA__':'__DATE__');
+  const t=v('time')||(lang==='it'?'__ORA__':'__TIME__');
+  const g=v('guests')||(lang==='it'?'__PERSONE__':'__GUESTS__');
+  const txt=lang==='it'
+    ?`Buonasera, sono: ${n}\nVorrei prenotare un tavolo per cena in data: ${d}\nAlle ore: ${t}\nNumero persone: ${g}`
+    :`Good evening, my name is: ${n}\nI would like to book a table for dinner on: ${d}\nAt: ${t}\nNumber of guests: ${g}`;
+  document.getElementById('wa-link').href='https://wa.me/393290013023?text='+encodeURIComponent(txt);
+}
+
+['name','date','time','guests'].forEach(id=>document.getElementById(id).addEventListener('input',render));
+render();
 </script>
 </body>
 </html>
