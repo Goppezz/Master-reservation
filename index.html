@@ -34,6 +34,42 @@ label{display:grid;gap:6px;font-size:13px;color:rgba(255,255,255,.78);font-weigh
 input{width:100%;padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.11);color:#fff;outline:none;font-size:15px}
 input::placeholder{color:rgba(255,255,255,.38)}
 input:focus{border-color:rgba(255,255,255,.6);box-shadow:0 0 0 4px rgba(255,255,255,.12)}
+input[readonly]{cursor:pointer}
+/* Field wrapper for popup positioning */
+.field-wrap{position:relative}
+/* Picker popup */
+.picker-popup{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:200;background:#1b2e72;border:1px solid rgba(255,255,255,.28);border-radius:18px;padding:14px;box-shadow:0 20px 60px rgba(0,0,0,.45)}
+/* Calendar nav */
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cal-nav-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);color:#fff;border-radius:9px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;line-height:1;padding:0;transition:background .15s}
+.cal-nav-btn:hover{background:rgba(255,255,255,.24)}
+.cal-title{font-size:14px;font-weight:700;color:#fff;text-align:center;flex:1}
+/* Calendar days */
+.cal-days-header{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:5px}
+.cal-day-name{text-align:center;font-size:10px;font-weight:700;color:rgba(255,255,255,.5);padding:3px 0;text-transform:uppercase}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-day{text-align:center;border:none;background:none;color:#fff;border-radius:10px;padding:5px 2px;font-size:12px;cursor:pointer;line-height:1.25;min-height:40px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:background .15s}
+.cal-day:hover:not(.past):not(.empty){background:rgba(255,255,255,.18)}
+.cal-day.past{color:rgba(255,255,255,.25);cursor:not-allowed}
+.cal-day.empty{cursor:default}
+.cal-day.today{background:rgba(255,255,255,.12)}
+.cal-day.selected{background:#25D366;color:#042f1b}
+.cal-day.selected .day-num{font-weight:800}
+.cal-day.selected .day-label{color:rgba(4,47,27,.65)}
+.day-num{font-size:13px;font-weight:500;line-height:1}
+.day-label{font-size:9px;color:rgba(255,255,255,.55);line-height:1;margin-top:2px}
+/* Time slots */
+.time-slots{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.time-slot{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:10px;padding:11px 4px;font-size:13px;font-weight:600;cursor:pointer;text-align:center;transition:background .15s,border-color .15s;white-space:nowrap}
+.time-slot:hover{background:rgba(255,255,255,.22)}
+.time-slot.selected{background:#25D366;color:#042f1b;border-color:#25D366}
+/* House 4 You section */
+.h4y-section{border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:13px 15px;background:rgba(255,255,255,.06)}
+.h4y-label{display:flex !important;align-items:center;gap:12px;cursor:pointer;font-size:13px;font-weight:500;color:rgba(255,255,255,.88)}
+.h4y-checkbox{width:20px !important;height:20px;padding:0 !important;background:transparent !important;border:none !important;flex-shrink:0;cursor:pointer;accent-color:#25D366;box-shadow:none !important}
+.h4y-inner{display:flex;flex-direction:column;gap:6px}
+.h4y-logo{height:26px;width:auto;display:block}
+/* Actions */
 .actions{display:grid;gap:10px;margin-top:14px}
 .btn{display:flex;align-items:center;justify-content:center;text-decoration:none;padding:16px 18px;border-radius:18px;font-weight:800;font-size:16px}
 .wa{background:#25D366;color:#042f1b}
@@ -44,7 +80,7 @@ input:focus{border-color:rgba(255,255,255,.6);box-shadow:0 0 0 4px rgba(255,255,
 .footbox .k{font-size:11px;color:rgba(255,255,255,.68);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
 .footbox .v{color:#fff;font-size:14px;line-height:1.4}
 .footlink{color:#93c5fd;text-decoration:none;font-weight:700}
-@media(max-width:680px){.footgrid{grid-template-columns:1fr} .logo img{width:min(300px,92%)}}
+@media(max-width:680px){.footgrid{grid-template-columns:1fr} .logo img{width:min(300px,92%)} .time-slots{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
@@ -73,9 +109,38 @@ input:focus{border-color:rgba(255,255,255,.6);box-shadow:0 0 0 4px rgba(255,255,
       <p id="subtitle">Compila i campi qui sotto e premi "Prenota ora".</p>
       <div class="form">
         <label id="lbl-name">Nome<input id="name" placeholder="Giorgio"></label>
-        <label id="lbl-date">Data<input id="date" placeholder="28/05/2026"></label>
-        <label id="lbl-time">Ora<input id="time" placeholder="20:30"></label>
+
+        <div class="field-wrap">
+          <label id="lbl-date">Data<input id="date" placeholder="GG/MM/AAAA" readonly></label>
+          <div id="cal-popup" class="picker-popup" style="display:none">
+            <div class="cal-nav">
+              <button type="button" id="cal-prev" class="cal-nav-btn">&#8249;</button>
+              <span id="cal-month-year" class="cal-title"></span>
+              <button type="button" id="cal-next" class="cal-nav-btn">&#8250;</button>
+            </div>
+            <div id="cal-days-header" class="cal-days-header"></div>
+            <div id="cal-grid" class="cal-grid"></div>
+          </div>
+        </div>
+
+        <div class="field-wrap">
+          <label id="lbl-time">Ora<input id="time" placeholder="18:00 – 23:30" readonly></label>
+          <div id="time-popup" class="picker-popup" style="display:none">
+            <div id="time-slots" class="time-slots"></div>
+          </div>
+        </div>
+
         <label id="lbl-guests">Persone<input id="guests" placeholder="2"></label>
+
+        <div class="h4y-section">
+          <label class="h4y-label">
+            <input type="checkbox" id="house4you" class="h4y-checkbox" onchange="render()">
+            <span class="h4y-inner">
+              <img src="assets/house4you.svg" alt="House 4 You" class="h4y-logo">
+              <span id="h4y-text">Sono ospite delle strutture House 4 You</span>
+            </span>
+          </label>
+        </div>
       </div>
       <div class="actions">
         <a class="btn wa" id="wa-link" href="#" target="_blank" rel="noopener">Prenota ora</a>
@@ -104,69 +169,248 @@ input:focus{border-color:rgba(255,255,255,.6);box-shadow:0 0 0 4px rgba(255,255,
 
 </div></div>
 <script>
-let lang='it';
-const data={
-  it:{
-    brand:'Restaurant &amp; American Bar<br>Santa Margherita Ligure',
-    sub:'Cucina fine dining, grandi vini e cocktail signature in un ambiente elegante e rilassato.',
-    hoursLabel:'Aperto tutti i giorni',
-    hoursLine:'17:00 – 01:00 &nbsp;Ristorante<br>17:00 – 02:00 &nbsp;American Bar',
-    title:'Compila la prenotazione',
-    subtitle:'Compila i campi qui sotto e premi "Prenota ora".',
-    disclaimer:'Si aprirà WhatsApp con il messaggio già pronto.',
-    name:'Nome',date:'Data',time:'Ora',guests:'Persone',wa:'Prenota ora',
-    footerPhone:'Telefono',footerAddress:'Indirizzo'
+let lang = 'it';
+let selectedDate = null;
+let calViewDate = new Date();
+let selectedTime = null;
+
+const TIME_SLOTS = ['18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30','22:00','22:30','23:00','23:30'];
+
+const MONTH_IT = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+const DAY_IT   = ['Do','Lu','Ma','Me','Gi','Ve','Sa'];
+const MONTH_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DAY_EN   = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+
+const data = {
+  it: {
+    brand: 'Restaurant &amp; American Bar<br>Santa Margherita Ligure',
+    sub: 'Cucina fine dining, grandi vini e cocktail signature in un ambiente elegante e rilassato.',
+    hoursLabel: 'Aperto tutti i giorni',
+    hoursLine: '17:00 – 01:00 &nbsp;Ristorante<br>17:00 – 02:00 &nbsp;American Bar',
+    title: 'Compila la prenotazione',
+    subtitle: 'Compila i campi qui sotto e premi "Prenota ora".',
+    disclaimer: 'Si aprirà WhatsApp con il messaggio già pronto.',
+    name: 'Nome', date: 'Data', time: 'Ora', guests: 'Persone', wa: 'Prenota ora',
+    footerPhone: 'Telefono', footerAddress: 'Indirizzo',
+    datePlaceholder: 'GG/MM/AAAA',
+    timePlaceholder: '18:00 – 23:30',
+    todayLabel: 'oggi', tomorrowLabel: 'domani',
+    h4yText: 'Sono ospite delle strutture House 4 You',
+    h4yMsg: 'Sono ospite di House 4 You'
   },
-  en:{
-    brand:'Restaurant &amp; American Bar<br>Santa Margherita Ligure',
-    sub:'Fine dining, great wines and signature cocktails in an elegant and relaxed atmosphere.',
-    hoursLabel:'Open every day',
-    hoursLine:'5:00 PM – 1:00 AM &nbsp;Restaurant<br>5:00 PM – 2:00 AM &nbsp;American Bar',
-    title:'Book a table',
-    subtitle:'Fill in the fields below and tap "Book now".',
-    disclaimer:'WhatsApp will open with the message already filled in.',
-    name:'Name',date:'Date',time:'Time',guests:'Guests',wa:'Book now',
-    footerPhone:'Phone',footerAddress:'Address'
+  en: {
+    brand: 'Restaurant &amp; American Bar<br>Santa Margherita Ligure',
+    sub: 'Fine dining, great wines and signature cocktails in an elegant and relaxed atmosphere.',
+    hoursLabel: 'Open every day',
+    hoursLine: '5:00 PM – 1:00 AM &nbsp;Restaurant<br>5:00 PM – 2:00 AM &nbsp;American Bar',
+    title: 'Book a table',
+    subtitle: 'Fill in the fields below and tap "Book now".',
+    disclaimer: 'WhatsApp will open with the message already filled in.',
+    name: 'Name', date: 'Date', time: 'Time', guests: 'Guests', wa: 'Book now',
+    footerPhone: 'Phone', footerAddress: 'Address',
+    datePlaceholder: 'MM/DD/YYYY',
+    timePlaceholder: '6:00 PM – 11:30 PM',
+    todayLabel: 'today', tomorrowLabel: 'tomorrow',
+    h4yText: 'I am a guest of House 4 You',
+    h4yMsg: 'I am a guest of House 4 You'
   }
 };
 
-function setLang(l){
-  lang=l;
-  document.getElementById('lang-it').classList.toggle('active',l==='it');
-  document.getElementById('lang-en').classList.toggle('active',l==='en');
-  document.documentElement.lang=l;
-  const d=data[l];
-  document.getElementById('brand').innerHTML=d.brand;
-  document.getElementById('sub').textContent=d.sub;
-  document.getElementById('hours-label').textContent=d.hoursLabel;
-  document.getElementById('hours-line').innerHTML=d.hoursLine;
-  document.getElementById('title').textContent=d.title;
-  document.getElementById('subtitle').textContent=d.subtitle;
-  document.getElementById('disclaimer').textContent=d.disclaimer;
-  document.getElementById('lbl-name').firstChild.textContent=d.name;
-  document.getElementById('lbl-date').firstChild.textContent=d.date;
-  document.getElementById('lbl-time').firstChild.textContent=d.time;
-  document.getElementById('lbl-guests').firstChild.textContent=d.guests;
-  document.getElementById('wa-link').textContent=d.wa;
-  document.getElementById('footer-phone-label').textContent=d.footerPhone;
-  document.getElementById('footer-address-label').textContent=d.footerAddress;
+function startOfDay(d) {
+  const r = new Date(d); r.setHours(0,0,0,0); return r;
+}
+
+function isSameDay(a, b) {
+  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+}
+
+function formatDate(d) {
+  if (!d) return '';
+  const dd = String(d.getDate()).padStart(2,'0');
+  const mm = String(d.getMonth() + 1).padStart(2,'0');
+  const yyyy = d.getFullYear();
+  return lang === 'it' ? `${dd}/${mm}/${yyyy}` : `${mm}/${dd}/${yyyy}`;
+}
+
+function formatTime12(t) {
+  const [h, m] = t.split(':').map(Number);
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  const h12 = h % 12 || 12;
+  return `${h12}:${String(m).padStart(2,'0')} ${ampm}`;
+}
+
+function displayTime(t) {
+  return lang === 'en' ? formatTime12(t) : t;
+}
+
+/* ── Calendar ── */
+function renderCalendar() {
+  const today    = startOfDay(new Date());
+  const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() + 1);
+  const d        = data[lang];
+  const months   = lang === 'it' ? MONTH_IT : MONTH_EN;
+  const days     = lang === 'it' ? DAY_IT   : DAY_EN;
+
+  document.getElementById('cal-month-year').textContent =
+    `${months[calViewDate.getMonth()]} ${calViewDate.getFullYear()}`;
+
+  document.getElementById('cal-days-header').innerHTML =
+    days.map(n => `<div class="cal-day-name">${n}</div>`).join('');
+
+  const firstDay  = new Date(calViewDate.getFullYear(), calViewDate.getMonth(), 1);
+  const lastDay   = new Date(calViewDate.getFullYear(), calViewDate.getMonth() + 1, 0);
+  const startWday = firstDay.getDay();
+
+  let html = '';
+  for (let i = 0; i < startWday; i++) html += `<div class="cal-day empty"></div>`;
+
+  for (let day = 1; day <= lastDay.getDate(); day++) {
+    const date       = new Date(calViewDate.getFullYear(), calViewDate.getMonth(), day);
+    const isPast     = date < today;
+    const isToday    = isSameDay(date, today);
+    const isTomorrow = isSameDay(date, tomorrow);
+    const isSelected = selectedDate && isSameDay(date, selectedDate);
+
+    let cls = 'cal-day';
+    if (isPast)     cls += ' past';
+    if (isToday)    cls += ' today';
+    if (isSelected) cls += ' selected';
+
+    let sub = '';
+    if (isToday)    sub = `<span class="day-label">${d.todayLabel}</span>`;
+    else if (isTomorrow) sub = `<span class="day-label">${d.tomorrowLabel}</span>`;
+
+    const click = !isPast
+      ? `onclick="selectDate(new Date(${date.getFullYear()},${date.getMonth()},${day}))"`
+      : '';
+
+    html += `<button type="button" class="${cls}" ${click}><span class="day-num">${day}</span>${sub}</button>`;
+  }
+
+  document.getElementById('cal-grid').innerHTML = html;
+}
+
+function selectDate(d) {
+  selectedDate = d;
+  document.getElementById('date').value = formatDate(d);
+  closeAll();
   render();
 }
 
-function v(id){return document.getElementById(id).value.trim()}
-
-function render(){
-  const n=v('name')||(lang==='it'?'__NOME__':'__NAME__');
-  const d=v('date')||(lang==='it'?'__DATA__':'__DATE__');
-  const t=v('time')||(lang==='it'?'__ORA__':'__TIME__');
-  const g=v('guests')||(lang==='it'?'__PERSONE__':'__GUESTS__');
-  const txt=lang==='it'
-    ?`Buonasera, sono: ${n}\nVorrei prenotare un tavolo per cena in data: ${d}\nAlle ore: ${t}\nNumero persone: ${g}`
-    :`Good evening, my name is: ${n}\nI would like to book a table for dinner on: ${d}\nAt: ${t}\nNumber of guests: ${g}`;
-  document.getElementById('wa-link').href='https://wa.me/393290013023?text='+encodeURIComponent(txt);
+/* ── Time picker ── */
+function renderTimeSlots() {
+  document.getElementById('time-slots').innerHTML = TIME_SLOTS.map(t => {
+    const label    = displayTime(t);
+    const selected = selectedTime === t ? ' selected' : '';
+    return `<button type="button" class="time-slot${selected}" onclick="selectTime('${t}')">${label}</button>`;
+  }).join('');
 }
 
-['name','date','time','guests'].forEach(id=>document.getElementById(id).addEventListener('input',render));
+function selectTime(t) {
+  selectedTime = t;
+  document.getElementById('time').value = displayTime(t);
+  closeAll();
+  render();
+}
+
+/* ── Popup management ── */
+function closeAll() {
+  document.getElementById('cal-popup').style.display  = 'none';
+  document.getElementById('time-popup').style.display = 'none';
+}
+
+document.getElementById('date').addEventListener('click', function(e) {
+  e.stopPropagation();
+  const tp = document.getElementById('time-popup');
+  tp.style.display = 'none';
+  const cp = document.getElementById('cal-popup');
+  const opening = cp.style.display === 'none';
+  cp.style.display = opening ? 'block' : 'none';
+  if (opening) {
+    calViewDate = selectedDate ? new Date(selectedDate) : new Date();
+    renderCalendar();
+  }
+});
+
+document.getElementById('time').addEventListener('click', function(e) {
+  e.stopPropagation();
+  const cp = document.getElementById('cal-popup');
+  cp.style.display = 'none';
+  const tp = document.getElementById('time-popup');
+  const opening = tp.style.display === 'none';
+  tp.style.display = opening ? 'block' : 'none';
+  if (opening) renderTimeSlots();
+});
+
+document.getElementById('cal-prev').addEventListener('click', function(e) {
+  e.stopPropagation();
+  calViewDate = new Date(calViewDate.getFullYear(), calViewDate.getMonth() - 1, 1);
+  renderCalendar();
+});
+
+document.getElementById('cal-next').addEventListener('click', function(e) {
+  e.stopPropagation();
+  calViewDate = new Date(calViewDate.getFullYear(), calViewDate.getMonth() + 1, 1);
+  renderCalendar();
+});
+
+['cal-popup','time-popup'].forEach(id => {
+  document.getElementById(id).addEventListener('click', e => e.stopPropagation());
+});
+
+document.addEventListener('click', closeAll);
+
+/* ── Language switch ── */
+function setLang(l) {
+  lang = l;
+  document.getElementById('lang-it').classList.toggle('active', l === 'it');
+  document.getElementById('lang-en').classList.toggle('active', l === 'en');
+  document.documentElement.lang = l;
+  const d = data[l];
+  document.getElementById('brand').innerHTML          = d.brand;
+  document.getElementById('sub').textContent          = d.sub;
+  document.getElementById('hours-label').textContent  = d.hoursLabel;
+  document.getElementById('hours-line').innerHTML     = d.hoursLine;
+  document.getElementById('title').textContent        = d.title;
+  document.getElementById('subtitle').textContent     = d.subtitle;
+  document.getElementById('disclaimer').textContent   = d.disclaimer;
+  document.getElementById('lbl-name').firstChild.textContent   = d.name;
+  document.getElementById('lbl-date').firstChild.textContent   = d.date;
+  document.getElementById('lbl-time').firstChild.textContent   = d.time;
+  document.getElementById('lbl-guests').firstChild.textContent = d.guests;
+  document.getElementById('wa-link').textContent      = d.wa;
+  document.getElementById('footer-phone-label').textContent    = d.footerPhone;
+  document.getElementById('footer-address-label').textContent  = d.footerAddress;
+  document.getElementById('h4y-text').textContent     = d.h4yText;
+  document.getElementById('date').placeholder         = d.datePlaceholder;
+  document.getElementById('time').placeholder         = d.timePlaceholder;
+  // Reformat selected values for the new locale
+  if (selectedDate) document.getElementById('date').value = formatDate(selectedDate);
+  if (selectedTime) document.getElementById('time').value = displayTime(selectedTime);
+  render();
+}
+
+/* ── WhatsApp message ── */
+function v(id) { return document.getElementById(id).value.trim(); }
+
+function render() {
+  const n   = v('name')   || (lang === 'it' ? '__NOME__'    : '__NAME__');
+  const d   = v('date')   || (lang === 'it' ? '__DATA__'    : '__DATE__');
+  const t   = v('time')   || (lang === 'it' ? '__ORA__'     : '__TIME__');
+  const g   = v('guests') || (lang === 'it' ? '__PERSONE__' : '__GUESTS__');
+  const h4y = document.getElementById('house4you').checked;
+
+  let txt = lang === 'it'
+    ? `Buonasera, sono: ${n}\nVorrei prenotare un tavolo per cena in data: ${d}\nAlle ore: ${t}\nNumero persone: ${g}`
+    : `Good evening, my name is: ${n}\nI would like to book a table for dinner on: ${d}\nAt: ${t}\nNumber of guests: ${g}`;
+
+  if (h4y) txt += '\n' + data[lang].h4yMsg;
+
+  document.getElementById('wa-link').href = 'https://wa.me/393290013023?text=' + encodeURIComponent(txt);
+}
+
+document.getElementById('name').addEventListener('input', render);
+document.getElementById('guests').addEventListener('input', render);
 render();
 </script>
 </body>
